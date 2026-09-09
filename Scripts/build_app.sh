@@ -21,6 +21,15 @@ mkdir -p "$APP_DIR/Contents/Resources"
 
 cp "$BUILD_DIR/$EXECUTABLE_NAME" "$APP_DIR/Contents/MacOS/$EXECUTABLE_NAME"
 
+# Бинарник линкуется на Sparkle.framework динамически с rpath @loader_path —
+# кладём framework в ту же папку, что и сам исполняемый файл.
+SPARKLE_FRAMEWORK="$BUILD_DIR/Sparkle.framework"
+if [ ! -d "$SPARKLE_FRAMEWORK" ]; then
+    echo "ERROR: Sparkle.framework not found at $SPARKLE_FRAMEWORK"
+    exit 1
+fi
+cp -R "$SPARKLE_FRAMEWORK" "$APP_DIR/Contents/MacOS/Sparkle.framework"
+
 RESOURCE_BUNDLE="$BUILD_DIR/${EXECUTABLE_NAME}_${EXECUTABLE_NAME}.bundle"
 if [ ! -d "$RESOURCE_BUNDLE" ]; then
     echo "ERROR: SPM resource bundle not found at $RESOURCE_BUNDLE"
