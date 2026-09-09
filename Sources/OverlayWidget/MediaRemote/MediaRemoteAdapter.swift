@@ -47,14 +47,28 @@ final class MediaRemoteAdapter: MediaRemoteAdapting {
     private var streamProcess: Process?
 
     init?() {
-        guard let scriptURL = Bundle.module.url(forResource: Resource.script, withExtension: Resource.scriptExtension),
-              let frameworkURL = Bundle.module.url(forResource: Resource.framework, withExtension: nil),
-              let testClientURL = Bundle.module.url(forResource: Resource.testClient, withExtension: nil) else {
+        let bundle = MediaRemoteAdapter.resourceBundle
+        guard let scriptURL = bundle.url(forResource: Resource.script, withExtension: Resource.scriptExtension),
+              let frameworkURL = bundle.url(forResource: Resource.framework, withExtension: nil),
+              let testClientURL = bundle.url(forResource: Resource.testClient, withExtension: nil) else {
             return nil
         }
         self.scriptURL = scriptURL
         self.frameworkURL = frameworkURL
         self.testClientURL = testClientURL
+    }
+
+    /// `Bundle.module` (сгенерированный SPM) ищет ресурс-бандл через `Bundle.main.bundleURL` —
+    /// это корень `.app`, а codesign не умеет запечатывать там несистемный контент без ошибок
+    /// верификации. Поэтому в упакованном `.app` бандл лежит в стандартном `Contents/Resources/`,
+    /// и мы ищем его там в первую очередь; `Bundle.module` остаётся фолбэком для `swift run`.
+    private static var resourceBundle: Bundle {
+        let packagedURL = Bundle.main.bundleURL
+            .appendingPathComponent("Contents/Resources/OverlayWidget_OverlayWidget.bundle")
+        if let packaged = Bundle(url: packagedURL) {
+            return packaged
+        }
+        return Bundle.module
     }
 
     func nowPlayingUpdates() -> AsyncStream<NowPlayingInfo> {
