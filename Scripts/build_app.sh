@@ -5,7 +5,7 @@ ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$ROOT_DIR"
 
 APP_NAME="Overlay Widget"
-EXECUTABLE_NAME="YandexOverlay"
+EXECUTABLE_NAME="OverlayWidget"
 BUNDLE_ID="com.ivlugantsov.OverlayWidget"
 BUILD_DIR="$ROOT_DIR/.build/release"
 DIST_DIR="$ROOT_DIR/dist"
@@ -28,7 +28,7 @@ if [ ! -d "$RESOURCE_BUNDLE" ]; then
 fi
 cp -R "$RESOURCE_BUNDLE" "$APP_DIR/Contents/Resources/"
 
-cp "Sources/YandexOverlay/Resources/AppIcon.icns" "$APP_DIR/Contents/Resources/AppIcon.icns"
+cp "Sources/OverlayWidget/Resources/AppIcon.icns" "$APP_DIR/Contents/Resources/AppIcon.icns"
 
 cat > "$APP_DIR/Contents/Info.plist" << PLIST
 <?xml version="1.0" encoding="UTF-8"?>

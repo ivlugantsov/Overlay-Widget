@@ -9,7 +9,11 @@
 
 import AppKit
 
-let outputDir = "/Users/ivlugantsov/Desktop/YandexOverlay/Sources/YandexOverlay/Resources/AppIcon.iconset"
+let scriptDir = URL(fileURLWithPath: #filePath).deletingLastPathComponent()
+let outputDir = scriptDir
+    .deletingLastPathComponent()
+    .appendingPathComponent("Sources/OverlayWidget/Resources/AppIcon.iconset")
+    .path
 
 func drawIcon(size: CGFloat) -> NSImage {
     let image = NSImage(size: NSSize(width: size, height: size))

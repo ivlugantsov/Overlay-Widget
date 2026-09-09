@@ -2,11 +2,17 @@
 import PackageDescription
 
 let package = Package(
-    name: "YandexOverlay",
+    name: "OverlayWidget",
     platforms: [.macOS(.v13)],
+    dependencies: [
+        .package(url: "https://github.com/sparkle-project/Sparkle", from: "2.6.4")
+    ],
     targets: [
         .executableTarget(
-            name: "YandexOverlay",
+            name: "OverlayWidget",
+            dependencies: [
+                .product(name: "Sparkle", package: "Sparkle")
+            ],
             exclude: [
                 // Иконка приложения копируется напрямую в .app при упаковке (Scripts/build_app.sh),
                 // не через Bundle.module — не нужна как SPM-ресурс.
