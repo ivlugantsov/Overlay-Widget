@@ -37,6 +37,18 @@ if [ ! -d "$RESOURCE_BUNDLE" ]; then
 fi
 cp -R "$RESOURCE_BUNDLE" "$APP_DIR/Contents/Resources/"
 
+# MediaRemoteAdapter.framework внутри ресурс-бандла собран вручную давно и несёт
+# протухшую подпись (Sealed Resources=none при реально существующих Resources) —
+# из-за неё --deep --strict валит верификацию всего .app. Переподписываем начисто.
+MEDIA_REMOTE_FRAMEWORK="$APP_DIR/Contents/Resources/$(basename "$RESOURCE_BUNDLE")/MediaRemoteAdapter.framework"
+if [ -d "$MEDIA_REMOTE_FRAMEWORK" ]; then
+    codesign --force --sign - "$MEDIA_REMOTE_FRAMEWORK"
+fi
+TEST_CLIENT="$APP_DIR/Contents/Resources/$(basename "$RESOURCE_BUNDLE")/MediaRemoteAdapterTestClient"
+if [ -f "$TEST_CLIENT" ]; then
+    codesign --force --sign - "$TEST_CLIENT"
+fi
+
 cp "Sources/OverlayWidget/Resources/AppIcon.icns" "$APP_DIR/Contents/Resources/AppIcon.icns"
 
 cat > "$APP_DIR/Contents/Info.plist" << PLIST

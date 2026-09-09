@@ -26,6 +26,7 @@ struct SettingsView: View {
     private let stockSearch: StockQuoting
     @ObservedObject private var playerViewInput: PlayerViewInput
     @ObservedObject private var marketViewInput: MarketPanelViewInput
+    @ObservedObject private var petViewModel: PetViewModel
     @ObservedObject private var launchAtLoginController: LaunchAtLoginController
     @EnvironmentObject private var languageStore: LanguageStore
 
@@ -49,6 +50,7 @@ struct SettingsView: View {
         finnhubTokenStore: TokenStoring,
         playerViewModel: PlayerViewModel,
         marketViewModel: MarketPanelViewModel,
+        petViewModel: PetViewModel,
         cryptoDirectory: BinanceSymbolDirectory,
         stockSearch: StockQuoting,
         launchAtLoginController: LaunchAtLoginController
@@ -62,6 +64,7 @@ struct SettingsView: View {
         self.launchAtLoginController = launchAtLoginController
         playerViewInput = playerViewModel.viewInput
         marketViewInput = marketViewModel.viewInput
+        _petViewModel = ObservedObject(wrappedValue: petViewModel)
         _yandexToken = State(initialValue: yandexTokenStore.loadToken() ?? "")
         _finnhubToken = State(initialValue: finnhubTokenStore.loadToken() ?? "")
     }
@@ -103,6 +106,10 @@ private extension SettingsView {
             Toggle(strings.marketPanelToggle, isOn: Binding(
                 get: { marketViewInput.isEnabled },
                 set: { marketViewModel.setEnabled($0) }
+            ))
+            Toggle(strings.petToggle, isOn: Binding(
+                get: { petViewModel.isEnabled },
+                set: { petViewModel.setEnabled($0) }
             ))
 
             Divider()

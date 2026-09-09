@@ -19,6 +19,7 @@ struct Strings {
     let widgetsDescription: String
     let playerToggle: String
     let marketPanelToggle: String
+    let petToggle: String
     let launchAtLoginToggle: String
 
     let languageTitle: String
@@ -71,6 +72,7 @@ extension Strings {
         widgetsDescription: "Можно показывать по отдельности — например только котировки, без плеера.",
         playerToggle: "Плеер",
         marketPanelToggle: "Панель котировок",
+        petToggle: "Питомец",
         launchAtLoginToggle: "Запускать при входе в систему",
         languageTitle: "Язык",
         yandexTokenTitle: "Yandex OAuth-токен",
@@ -117,6 +119,7 @@ extension Strings {
         widgetsDescription: "Can be shown independently — e.g. quotes only, without the player.",
         playerToggle: "Player",
         marketPanelToggle: "Quotes panel",
+        petToggle: "Pet",
         launchAtLoginToggle: "Launch at Login",
         languageTitle: "Language",
         yandexTokenTitle: "Yandex OAuth token",
