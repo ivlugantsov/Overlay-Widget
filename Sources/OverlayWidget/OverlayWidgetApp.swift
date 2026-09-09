@@ -11,6 +11,9 @@ import SwiftUI
 
 final class AppDelegate: NSObject, NSApplicationDelegate {
     private var panel: OverlayPanel?
+    private var petPanel: PetPanel?
+    private var petViewModel: PetViewModel?
+    private let petStatusStore = PetStatusStore()
     private var viewModel: PlayerViewModel?
     private var marketViewModel: MarketPanelViewModel?
     private var statusItem: NSStatusItem?
@@ -67,6 +70,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         panel.setFrameTopLeftPoint(NSPoint(x: 40, y: NSScreen.main?.frame.height ?? 800 - 40))
         panel.orderFrontRegardless()
         self.panel = panel
+
+        let petViewModel = PetViewModel(visibilityStore: visibilityStore)
+        petViewModel.start(statusStore: petStatusStore)
+        self.petViewModel = petViewModel
+        petPanel = PetPanel(viewModel: petViewModel)
     }
 }
 
@@ -131,7 +139,7 @@ private extension AppDelegate {
     }
 
     @objc func didTapSettings() {
-        if settingsWindow == nil, let marketViewModel, let viewModel {
+        if settingsWindow == nil, let marketViewModel, let viewModel, let petViewModel {
             let window = NSWindow(
                 contentRect: NSRect(x: 0, y: 0, width: 340, height: 560),
                 styleMask: [.titled, .closable],
@@ -144,6 +152,7 @@ private extension AppDelegate {
                 finnhubTokenStore: finnhubTokenStore,
                 playerViewModel: viewModel,
                 marketViewModel: marketViewModel,
+                petViewModel: petViewModel,
                 cryptoDirectory: cryptoDirectory,
                 stockSearch: stockFeed,
                 launchAtLoginController: launchAtLoginController

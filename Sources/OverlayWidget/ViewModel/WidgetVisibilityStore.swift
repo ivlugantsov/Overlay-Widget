@@ -12,6 +12,7 @@ import Foundation
 final class WidgetVisibilityStore {
     private enum Keys {
         static let isPlayerVisible = "widget.isPlayerVisible"
+        static let isPetVisible = "widget.isPetVisible"
     }
 
     private let defaults: UserDefaults
@@ -25,5 +26,10 @@ final class WidgetVisibilityStore {
     var isPlayerVisible: Bool {
         get { (defaults.object(forKey: Keys.isPlayerVisible) as? Bool) ?? true }
         set { defaults.set(newValue, forKey: Keys.isPlayerVisible) }
+    }
+
+    var isPetVisible: Bool {
+        get { (defaults.object(forKey: Keys.isPetVisible) as? Bool) ?? true }
+        set { defaults.set(newValue, forKey: Keys.isPetVisible) }
     }
 }
